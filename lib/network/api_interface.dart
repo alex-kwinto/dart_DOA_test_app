@@ -66,10 +66,3 @@ class Joke {
     );
   }
 }
-
-//nsfw - work_off
-//religious - church
-//political - how_to_reg
-//racist - group_off
-//sexist - volunteer_activism
-//explicit - explicit

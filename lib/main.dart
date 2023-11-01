@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import './apiWork.dart';
+import 'network/api_interface.dart';
+import 'ui/my_app_state.dart';
+import 'ui/favorites_page.dart';
+import 'ui/filter_button.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,7 +17,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => MyAppState(),
       child: MaterialApp(
-        title: 'Namer App',
+        title: 'JokesApp',
         theme: ThemeData(
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.cyan),
@@ -25,25 +28,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyAppState extends ChangeNotifier {
-  late Future<Joke> futureJoke = fetchJoke();
 
-  void getNext() {
-    futureJoke = fetchJoke();
-    notifyListeners();
-  }
-
-  var favorites = <Joke>[];
-
-  void toggleFavorite(Joke joke) {
-    if (favorites.contains(joke)) {
-      favorites.remove(joke);
-    } else {
-      favorites.add(joke);
-    }
-    notifyListeners();
-  }
-}
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -106,102 +91,12 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: Row(
                           children: [
                             SizedBox(width: 30),
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  // Handle the press event here
-                                },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.work_off),
-                                    // Replace with your icon
-                                    if (constraints.maxWidth >= 600)
-                                      Text('NSFW'),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  // Handle the press event here
-                                },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.church),
-                                    // Replace with your icon
-                                    if (constraints.maxWidth >= 600)
-                                      Text('Religious'),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  // Handle the press event here
-                                },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.how_to_reg),
-                                    // Replace with your icon
-                                    if (constraints.maxWidth >= 600)
-                                      Text('Political'),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  // Handle the press event here
-                                },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.group_off),
-                                    // Replace with your icon
-                                    if (constraints.maxWidth >= 600)
-                                      Text('Racist'),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  // Handle the press event here
-                                },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.volunteer_activism),
-                                    // Replace with your icon
-                                    if (constraints.maxWidth >= 600)
-                                      Text('Sexist'),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  // Handle the press event here
-                                },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.explicit),
-                                    // Replace with your icon
-                                    if (constraints.maxWidth >= 600)
-                                      Text('Explicit'),
-                                  ],
-                                ),
-                              ),
-                            ),
+                            FilterButton(buttonIcon: Icons.work_off, buttonString: 'NSFW', buttonCondition: constraints.maxWidth >= 600),
+                            FilterButton(buttonIcon: Icons.church, buttonString: 'Religious', buttonCondition: constraints.maxWidth >= 600),
+                            FilterButton(buttonIcon: Icons.how_to_reg, buttonString: 'Political', buttonCondition: constraints.maxWidth >= 600),
+                            FilterButton(buttonIcon: Icons.group_off, buttonString: 'Racist', buttonCondition: constraints.maxWidth >= 600),
+                            FilterButton(buttonIcon: Icons.volunteer_activism, buttonString: 'Sexist', buttonCondition: constraints.maxWidth >= 600),
+                            FilterButton(buttonIcon: Icons.explicit, buttonString: 'Explicit', buttonCondition: constraints.maxWidth >= 600),
 /*bool isToggled = false;
 
 GestureDetector(
@@ -309,123 +204,4 @@ class JokePage extends StatelessWidget {
   }
 }
 
-// class GeneratorPage extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     var appState = context.watch<MyAppState>();
-//     // var pair = appState.current;
-//
-//     IconData icon;
-//     icon = Icons.favorite_border;
-//     // if (appState.favorites.contains(pair)) {
-//     //   icon = Icons.favorite;
-//     // } else {
-//     //   icon = Icons.favorite_border;
-//     // }
-//
-//     return Center(
-//       child: Column(
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         children: [
-//           // BigCard(pair: pair),
-//           SizedBox(height: 10),
-//           Row(
-//             mainAxisSize: MainAxisSize.min,
-//             children: [
-//               ElevatedButton.icon(
-//                 onPressed: () {
-//                   appState.toggleFavorite();
-//                 },
-//                 icon: Icon(icon),
-//                 label: Text('Like'),
-//               ),
-//               SizedBox(width: 10),
-//               ElevatedButton(
-//                 onPressed: () {
-//                   appState.getNext();
-//                 },
-//                 child: Text('Next'),
-//               ),
-//             ],
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
 
-// class BigCard extends StatelessWidget {
-//   const BigCard({
-//     super.key,
-//     required this.pair,
-//   });
-//
-//   final WordPair pair;
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     final theme = Theme.of(context);
-//     final style = theme.textTheme.displayMedium!.copyWith(
-//       color: theme.colorScheme.onPrimary,
-//     );
-//
-//     return Card(
-//       color: theme.colorScheme.primary,
-//       child: Padding(
-//         padding: const EdgeInsets.all(20),
-//         child: Text(
-//           pair.asLowerCase,
-//           style: style,
-//           semanticsLabel: "${pair.first} ${pair.second}",
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-class FavoritesPage extends StatelessWidget {
-  String extractFirstWordsLimited(String input, int maxLength) {
-    List<String> words = input.split(' ');
-    List<String> selectedWords = [];
-    int currentLength = 0;
-
-    for (var word in words) {
-      if (currentLength + word.length + selectedWords.length > maxLength) {
-        break; // Stop if adding the next word exceeds the maxLength.
-      }
-      selectedWords.add(word);
-      currentLength += word.length;
-    }
-
-    return selectedWords.join(' ');
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
-
-    if (appState.favorites.isEmpty) {
-      return Center(
-        child: Text('No favorites yet.'),
-      );
-    }
-
-    return LayoutBuilder(builder: (context, constraints) {
-      return ListView(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Text('You have '
-                '${appState.favorites.length} favorites:'),
-          ),
-          for (var joke in appState.favorites)
-            ListTile(
-              leading: Icon(Icons.favorite),
-              title: Text(extractFirstWordsLimited(
-                  joke.jokeText, constraints.maxWidth >= 600 ? 60 : 25)),
-            ),
-        ],
-      );
-    });
-  }
-}
