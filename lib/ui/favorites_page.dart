@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import './my_app_state.dart';
+import '../model/joke.dart';
 
 class FavoritesPage extends StatelessWidget {
   String extractFirstWordsLimited(String input, int maxLength) {
@@ -17,6 +18,40 @@ class FavoritesPage extends StatelessWidget {
     }
 
     return selectedWords.join(' ');
+  }
+
+  void showPopup(BuildContext context, Joke joke) {
+    showDialog(
+      context: context,
+      builder: (BuildContext builderContext) {
+        var appState = context.watch<MyAppState>();
+
+        return AlertDialog(
+          title: Text('Popup Header'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(joke.jokeText),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+            TextButton(
+              onPressed: () {
+                appState.toggleFavorite(joke);
+                Navigator.of(context).pop();
+              },
+              child: Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -40,6 +75,7 @@ class FavoritesPage extends StatelessWidget {
           for (var joke in appState.favorites)
             ListTile(
               leading: Icon(Icons.favorite),
+              onTap: (){ showPopup(context, joke);},
               title: Text(extractFirstWordsLimited(
                   joke.jokeText, constraints.maxWidth >= 600 ? 60 : 25)),
             ),

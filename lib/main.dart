@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'network/api_interface.dart';
+import 'model/joke.dart';
 import 'ui/my_app_state.dart';
 import 'ui/favorites_page.dart';
 import 'ui/filter_button.dart';

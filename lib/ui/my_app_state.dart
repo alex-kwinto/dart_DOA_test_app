@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../network/api_interface.dart';
+import '../model/joke.dart';
 
 class MyAppState extends ChangeNotifier {
   late Future<Joke> futureJoke = fetchJoke();
