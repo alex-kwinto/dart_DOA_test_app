@@ -29,7 +29,7 @@ Uri buildJokeRequestURL(Map<String, bool> filters) {
       .map((entry) => entry.key)
       .toList();
 
-  final baseUrl = 'https://v2.jokeapi.dev/joke/Any?type=single';
+  const baseUrl = 'https://v2.jokeapi.dev/joke/Any?type=single';
 
   // If no active filters, build the request URL without blacklistFlags
   if (activeFilters.isEmpty) {

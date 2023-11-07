@@ -57,42 +57,46 @@ class FavoritesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appState = context.watch<MyAppState>();
-    final Future<List<Joke>> favorites = appState.databaseWrapper.getFilteredData(appState.filters);
+    final Future<List<Joke>> favorites =
+        appState.databaseWrapper.getFilteredData(appState.filters);
 
     return FutureBuilder<List<Joke>>(
       future: favorites,
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done  && snapshot.hasData) {
-            var jokes = snapshot.data; // The list of Joke objects
-            if (jokes!.isEmpty) {
-              return Center(
-                child: Text('No such favorites yet.'),
-              );
-            } else {
-              return LayoutBuilder(builder: (context, constraints) {
-                return ListView(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Text('You have '
-                          '${jokes.length} favorites:'),
+        if (snapshot.connectionState == ConnectionState.done &&
+            snapshot.hasData) {
+          var jokes = snapshot.data; // The list of Joke objects
+          if (jokes!.isEmpty) {
+            return Center(
+              child: Text('No such favorites yet.'),
+            );
+          } else {
+            return LayoutBuilder(builder: (context, constraints) {
+              return ListView(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Text('You have '
+                        '${jokes.length} favorites:'),
+                  ),
+                  for (var joke in jokes)
+                    ListTile(
+                      leading: Icon(Icons.favorite),
+                      onTap: () {
+                        showPopup(context, joke);
+                      },
+                      title: Text(extractFirstWordsLimited(joke.jokeText,
+                          constraints.maxWidth >= 600 ? 60 : 25)),
                     ),
-                    for (var joke in jokes)
-                      ListTile(
-                        leading: Icon(Icons.favorite),
-                        onTap: (){ showPopup(context, joke);},
-                        title: Text(extractFirstWordsLimited(
-                            joke.jokeText, constraints.maxWidth >= 600 ? 60 : 25)),
-                      ),
-                  ],
-                );
-              });
-            }
-
+                ],
+              );
+            });
+          }
         }
         if (snapshot.connectionState == ConnectionState.done &&
-            snapshot.hasError)
+            snapshot.hasError) {
           return Text('${snapshot.error}');
+        }
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator();
         }

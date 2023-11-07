@@ -15,24 +15,20 @@ class MyAppState extends ChangeNotifier {
   };
   late Future<Joke> futureJoke = fetchJokeWithFilters(filters);
 
+  bool isFavorite = false;
+
   MyAppState(){
     databaseWrapper.initDatabase();
   }
 
   void getNext() {
     futureJoke = fetchJokeWithFilters(filters);
+    isFavorite = false;
     notifyListeners();
   }
 
-  // var favorites = <Joke>[];
-
-  void toggleFavorite(Joke joke) {
-    databaseWrapper.toggleItem(joke);
-    // if (favorites.contains(joke)) {
-    //   favorites.remove(joke);
-    // } else {
-    //   favorites.add(joke);
-    // }
+  void toggleFavorite(Joke joke) async{
+    isFavorite = await databaseWrapper.toggleItem(joke);
     notifyListeners();
   }
 

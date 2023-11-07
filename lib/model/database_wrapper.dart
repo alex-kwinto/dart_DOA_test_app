@@ -6,7 +6,7 @@ class DatabaseWrapper {
 
   Future<void> clearDatabase() async {
     // Get a reference to the database
-    final db = await database;
+    final db = database;
 
     // Delete all records from the 'jokes' table
     await db.delete('jokes');
@@ -43,11 +43,11 @@ class DatabaseWrapper {
 
     print(query);
 
-    final List<Map<String, dynamic>> data = await database.rawQuery(query.toString());
+    final List<Map<String, dynamic>> data =
+        await database.rawQuery(query.toString());
 
     return data.map((item) => Joke.fromMap(item)).toList();
   }
-
 
   Future<List<Joke>> getAllData() async {
     final List<Map<String, dynamic>> data = await database.query('jokes');
@@ -55,29 +55,24 @@ class DatabaseWrapper {
     return data.map((item) => Joke.fromMap(item)).toList();
   }
 
-  Future<void> toggleItem(Joke joke) async {
-    var existingItem = await getItemById(joke.id);
-    
-    if (existingItem != false) {
+  Future<bool> toggleItem(Joke joke) async {
+    bool existingItem = await isExistById(joke.id);
+
+    if (existingItem) {
       await database.delete('jokes', where: 'id = ?', whereArgs: [joke.id]);
-      existingItem = await getItemById(joke.id);
     } else {
       await database.insert('jokes', joke.toMap());
     }
+    return existingItem;
   }
 
-  Future<bool> getItemById(int id) async {
+  Future<bool> isExistById(int id) async {
     final List<Map<String, dynamic>> jokes = await database.query(
       'jokes',
       where: 'id = ?',
       whereArgs: [id],
     );
 
-    if (jokes.isEmpty) {
-      print('EMPTY!');
-      return false;
-    } else {
-      return true;
-    }
+    return jokes.isNotEmpty;
   }
 }

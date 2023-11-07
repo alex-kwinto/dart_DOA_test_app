@@ -9,22 +9,10 @@ class JokePage extends StatelessWidget {
     var appState = context.watch<MyAppState>();
     late Future<Joke> futureJoke = appState.futureJoke;
 
-    IconData icon;
-    icon = Icons.favorite_border;
-    //TODO
-    // if (appState.favorites.contains(pair)) {
-    //   icon = Icons.favorite;
-    // } else {
-    //   icon = Icons.favorite_border;
-    // }
-
     return Center(
       child: FutureBuilder<Joke>(
         future: futureJoke,
         builder: (context, snapshot) {
-          // if (snapshot.connectionState == ConnectionState.done &&
-          //     snapshot.hasData)
-          //   print(snapshot.data!.flags);
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -43,9 +31,9 @@ class JokePage extends StatelessWidget {
                   ElevatedButton.icon(
                     onPressed: () {
                       appState.toggleFavorite(
-                          snapshot.data!); // Pass the data, not the snapshot
+                          snapshot.data!);
                     },
-                    icon: Icon(Icons.favorite),
+                    icon: Icon(appState.isFavorite ?Icons.favorite_border:Icons.favorite),
                     label: Text('Like'),
                   ),
                   SizedBox(width: 10),
