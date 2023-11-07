@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import './my_app_state.dart';
+import 'package:doa_test_app/ui/my_app_state.dart';
 
 class FilterButton extends StatelessWidget{
   final IconData buttonIcon;

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'model/joke.dart';
-import 'ui/my_app_state.dart';
-import 'ui/favorites_page.dart';
-import 'ui/filter_button.dart';
+import 'package:doa_test_app/ui/my_app_state.dart';
+import 'package:doa_test_app/ui/favorites_page.dart';
+import 'package:doa_test_app/ui/joke_page.dart';
+import 'package:doa_test_app/ui/filter_button.dart';
 
 void main() {
   runApp(MyApp());
@@ -91,12 +91,12 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: Row(
                           children: [
                             SizedBox(width: 30),
-                            FilterButton(buttonIcon: Icons.work_off, buttonString: 'NSFW', buttonCondition: constraints.maxWidth >= 600),
-                            FilterButton(buttonIcon: Icons.church, buttonString: 'Religious', buttonCondition: constraints.maxWidth >= 600),
-                            FilterButton(buttonIcon: Icons.how_to_reg, buttonString: 'Political', buttonCondition: constraints.maxWidth >= 600),
-                            FilterButton(buttonIcon: Icons.group_off, buttonString: 'Racist', buttonCondition: constraints.maxWidth >= 600),
-                            FilterButton(buttonIcon: Icons.volunteer_activism, buttonString: 'Sexist', buttonCondition: constraints.maxWidth >= 600),
-                            FilterButton(buttonIcon: Icons.explicit, buttonString: 'Explicit', buttonCondition: constraints.maxWidth >= 600),
+                            FilterButton(buttonIcon: Icons.work_off, buttonString: 'nsfw', buttonCondition: constraints.maxWidth >= 600),
+                            FilterButton(buttonIcon: Icons.church, buttonString: 'religious', buttonCondition: constraints.maxWidth >= 600),
+                            FilterButton(buttonIcon: Icons.how_to_reg, buttonString: 'political', buttonCondition: constraints.maxWidth >= 600),
+                            FilterButton(buttonIcon: Icons.group_off, buttonString: 'racist', buttonCondition: constraints.maxWidth >= 600),
+                            FilterButton(buttonIcon: Icons.volunteer_activism, buttonString: 'sexist', buttonCondition: constraints.maxWidth >= 600),
+                            FilterButton(buttonIcon: Icons.explicit, buttonString: 'explicit', buttonCondition: constraints.maxWidth >= 600),
 /*bool isToggled = false;
 
 GestureDetector(
@@ -145,63 +145,6 @@ GestureDetector(
   }
 }
 
-class JokePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
-    late Future<Joke> futureJoke = appState.futureJoke;
 
-    IconData icon;
-    icon = Icons.favorite_border;
-    //TODO
-    // if (appState.favorites.contains(pair)) {
-    //   icon = Icons.favorite;
-    // } else {
-    //   icon = Icons.favorite_border;
-    // }
-
-    return Center(
-      child: FutureBuilder<Joke>(
-        future: futureJoke,
-        builder: (context, snapshot) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (snapshot.connectionState == ConnectionState.done &&
-                  snapshot.hasData)
-                Text(snapshot.data!.jokeText),
-              if (snapshot.connectionState == ConnectionState.done &&
-                  snapshot.hasError)
-                Text('${snapshot.error}'),
-              if (snapshot.connectionState == ConnectionState.waiting)
-                CircularProgressIndicator(),
-              SizedBox(height: 20),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      appState.toggleFavorite(
-                          snapshot.data!); // Pass the data, not the snapshot
-                    },
-                    icon: Icon(Icons.favorite),
-                    label: Text('Like'),
-                  ),
-                  SizedBox(width: 10),
-                  ElevatedButton(
-                    onPressed: () {
-                      appState.getNext();
-                    },
-                    child: Text('Next'),
-                  ),
-                ],
-              ),
-            ],
-          );
-        },
-      ),
-    );
-  }
-}
 
 

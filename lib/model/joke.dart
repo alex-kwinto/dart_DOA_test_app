@@ -1,11 +1,14 @@
+import 'dart:convert';
 
 class Joke {
+  final int id;
   final String type;
   final String jokeText;
   final String category;
   final Map<String, bool> flags;
 
   const Joke({
+    required this.id,
     required this.type,
     required this.jokeText,
     required this.category,
@@ -19,18 +22,36 @@ class Joke {
   @override
   int get hashCode => jokeText.hashCode;
 
-  factory Joke.fromJson(Map<String, dynamic> json) {
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'type': type,
+      'jokeText': jokeText,
+      'category': category,
+      'flags': jsonEncode(flags), // Store the flags as a JSON string
+    };
+  }
+
+  factory Joke.fromMap(Map<String, dynamic> map) {
+    // print(map);
+
     return Joke(
-        type: json['type'],
-        jokeText: json['joke'],
-        category: json['category'],
-        flags: {
-          'NSFW': json['flags']['nsfw'],
-          'Religious': json['flags']['religious'],
-          'Political': json['flags']['political'],
-          'Racist': json['flags']['racist'],
-          'Sexist': json['flags']['sexist'],
-          'Explicit': json['flags']['explicit'],
-        });
+        id: map['id'],
+        type: map['type'],
+        jokeText: map['jokeText'],
+        category: map['category'],
+        flags: Map<String, bool>.from(json.decode(map['flags'])),
+        );
+  }
+
+  factory Joke.fromJson(Map<String, dynamic> json) {
+    print(json);
+    return Joke(
+      id: json['id'],
+      type: json['type'],
+      jokeText: json['joke'],
+      category: json['category'],
+      flags: Map<String, bool>.from(json['flags']),
+    );
   }
 }

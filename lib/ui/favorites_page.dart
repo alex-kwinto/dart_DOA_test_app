@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import './my_app_state.dart';
-import '../model/joke.dart';
+import 'package:doa_test_app/ui/my_app_state.dart';
+import 'package:doa_test_app/model/joke.dart';
 
 class FavoritesPage extends StatelessWidget {
   String extractFirstWordsLimited(String input, int maxLength) {
@@ -56,31 +56,48 @@ class FavoritesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
+    final appState = context.watch<MyAppState>();
+    final Future<List<Joke>> favorites = appState.databaseWrapper.getFilteredData(appState.filters);
 
-    if (appState.favorites.isEmpty) {
-      return Center(
-        child: Text('No favorites yet.'),
-      );
-    }
+    return FutureBuilder<List<Joke>>(
+      future: favorites,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done  && snapshot.hasData) {
+            var jokes = snapshot.data; // The list of Joke objects
+            if (jokes!.isEmpty) {
+              return Center(
+                child: Text('No such favorites yet.'),
+              );
+            } else {
+              return LayoutBuilder(builder: (context, constraints) {
+                return ListView(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Text('You have '
+                          '${jokes.length} favorites:'),
+                    ),
+                    for (var joke in jokes)
+                      ListTile(
+                        leading: Icon(Icons.favorite),
+                        onTap: (){ showPopup(context, joke);},
+                        title: Text(extractFirstWordsLimited(
+                            joke.jokeText, constraints.maxWidth >= 600 ? 60 : 25)),
+                      ),
+                  ],
+                );
+              });
+            }
 
-    return LayoutBuilder(builder: (context, constraints) {
-      return ListView(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Text('You have '
-                '${appState.favorites.length} favorites:'),
-          ),
-          for (var joke in appState.favorites)
-            ListTile(
-              leading: Icon(Icons.favorite),
-              onTap: (){ showPopup(context, joke);},
-              title: Text(extractFirstWordsLimited(
-                  joke.jokeText, constraints.maxWidth >= 600 ? 60 : 25)),
-            ),
-        ],
-      );
-    });
+        }
+        if (snapshot.connectionState == ConnectionState.done &&
+            snapshot.hasError)
+          return Text('${snapshot.error}');
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator();
+        }
+        return Text('should never trigger');
+      },
+    );
   }
 }
