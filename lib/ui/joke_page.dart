@@ -18,13 +18,15 @@ class JokePage extends StatelessWidget {
             children: [
               if (snapshot.connectionState == ConnectionState.done &&
                   snapshot.hasData)
-                Text(snapshot.data!.jokeText),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Text(snapshot.data!.jokeText),
+                ),
               if (snapshot.connectionState == ConnectionState.done &&
                   snapshot.hasError)
                 Text('${snapshot.error}'),
               if (snapshot.connectionState == ConnectionState.waiting)
                 CircularProgressIndicator(),
-              SizedBox(height: 20),
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [

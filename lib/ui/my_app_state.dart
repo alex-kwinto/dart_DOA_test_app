@@ -15,7 +15,7 @@ class MyAppState extends ChangeNotifier {
   };
   late Future<Joke> futureJoke = fetchJokeWithFilters(filters);
 
-  bool isFavorite = false;
+  bool isFavorite = true;
 
   MyAppState(){
     databaseWrapper.initDatabase();
@@ -23,7 +23,7 @@ class MyAppState extends ChangeNotifier {
 
   void getNext() {
     futureJoke = fetchJokeWithFilters(filters);
-    isFavorite = false;
+    isFavorite = true;
     notifyListeners();
   }
 
