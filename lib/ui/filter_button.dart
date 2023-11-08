@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:doa_test_app/ui/my_app_state.dart';
+import 'package:doa_test_app/model/my_app_state.dart';
 
 class FilterButton extends StatelessWidget{
   final IconData buttonIcon;
@@ -24,11 +24,11 @@ class FilterButton extends StatelessWidget{
           children: [
             Icon(
               buttonIcon,
-              //TODO review if null protection relieble
+              //TODO review if null protection reliable
               color: appState.filters[buttonString]! ? Colors.black : Colors.grey,
             ),
             if (buttonCondition)
-              Text(buttonString),
+              FittedBox(child: Text(buttonString)),
           ],
         ),
       ),

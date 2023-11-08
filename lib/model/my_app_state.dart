@@ -98,8 +98,10 @@ class MyAppState extends ChangeNotifier {
 
   void toggleFilter(String key) {
     //TODO review if null protection reliable
-    filters[key] = !filters[key]!;
-    setFilters(filters);
-    notifyListeners();
+    if(filters.containsKey(key)) {
+      filters[key] = !filters[key]!;
+      setFilters(filters);
+      notifyListeners();
+    }
   }
 }

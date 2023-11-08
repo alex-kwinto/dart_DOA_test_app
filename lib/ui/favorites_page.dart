@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:doa_test_app/ui/my_app_state.dart';
+import 'package:doa_test_app/model/my_app_state.dart';
 import 'package:doa_test_app/model/joke.dart';
 import 'package:doa_test_app/ui/flags_icons.dart';
 
