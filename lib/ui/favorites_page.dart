@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:doa_test_app/ui/my_app_state.dart';
 import 'package:doa_test_app/model/joke.dart';
+import 'package:doa_test_app/ui/flags_icons.dart';
 
 class FavoritesPage extends StatelessWidget {
   String extractFirstWordsLimited(String input, int maxLength) {
@@ -20,44 +21,21 @@ class FavoritesPage extends StatelessWidget {
     return selectedWords.join(' ');
   }
 
-  IconData getIconForFlag(String flagKey) {
-    switch (flagKey) {
-      case 'nsfw':
-        return Icons.work_off;
-      case 'religious':
-        return Icons.church;
-      case 'political':
-        return Icons.how_to_reg;
-      case 'racist':
-        return Icons.group_off;
-      case 'sexist':
-        return Icons.volunteer_activism;
-      case 'explicit':
-        return Icons.explicit;
-      default:
-        // Return a default icon (you can customize this as needed)
-        return Icons.error;
-    }
-  }
-
   void showPopup(BuildContext context, Joke joke) {
     showDialog(
       context: context,
       builder: (BuildContext builderContext) {
         var appState = context.watch<MyAppState>();
-        final icons = <Icon>[];
-        print(joke.flags);
-        joke.flags.forEach((key, value) {
-          final icon = Icon(
-            getIconForFlag(key),
-            size: 16,
-            color: value ? Colors.black : Colors.grey,
-          );
-          icons.add(icon);
-        });
 
         return AlertDialog(
-          title: Row(children: [Text(joke.category), Expanded(child: SizedBox(width: 30,)),Row(children: icons)]),
+          title: Row(children: [
+            Text(joke.category),
+            Expanded(
+                child: SizedBox(
+              width: 30,
+            )),
+            FilterIcons(flags: joke.flags)
+          ]),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[

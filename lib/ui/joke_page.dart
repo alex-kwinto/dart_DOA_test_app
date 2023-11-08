@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:doa_test_app/model/joke.dart';
 import 'package:doa_test_app/ui/my_app_state.dart';
+import 'package:doa_test_app/ui/flags_icons.dart';
 
 class JokePage extends StatelessWidget {
   @override
@@ -18,9 +19,21 @@ class JokePage extends StatelessWidget {
             children: [
               if (snapshot.connectionState == ConnectionState.done &&
                   snapshot.hasData)
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Text(snapshot.data!.jokeText),
+                Column(
+                  children: [
+                    Row(children: [
+                      Expanded(
+                          child: SizedBox(
+                            width: 30,
+                          )),
+                      FilterIcons(flags: snapshot.data!.flags),
+                      SizedBox(width: 20),
+                    ]),
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Text(snapshot.data!.jokeText),
+                    ),
+                  ],
                 ),
               if (snapshot.connectionState == ConnectionState.done &&
                   snapshot.hasError)

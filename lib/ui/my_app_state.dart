@@ -6,7 +6,6 @@ import 'package:doa_test_app/network/api_interface.dart';
 import 'package:doa_test_app/model/joke.dart';
 
 class MyAppState extends ChangeNotifier {
-
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   DatabaseWrapper databaseWrapper = DatabaseWrapper();
@@ -22,14 +21,14 @@ class MyAppState extends ChangeNotifier {
 
   bool isFavorite = true;
 
-  MyAppState(){
+  MyAppState() {
     databaseWrapper.initDatabase();
-    getFavorite();
     getFilters();
+    getFavorite();
     getJoke();
   }
 
-  void getNext() async{
+  void getNext() async {
     futureJoke = fetchJokeWithFilters(filters);
     isFavorite = true;
     setFavorite();
@@ -37,17 +36,17 @@ class MyAppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future setFavorite() async{
+  Future setFavorite() async {
     final SharedPreferences prefs = await _prefs;
     prefs.setBool('isFavorite', isFavorite);
   }
 
-  Future setFilters(Map<String, bool> filters) async{
+  Future setFilters(Map<String, bool> filters) async {
     final SharedPreferences prefs = await _prefs;
     prefs.setString('filters', jsonEncode(filters));
   }
 
-  Future setJoke() async{
+  Future setJoke() async {
     final SharedPreferences prefs = await _prefs;
     final Joke joke = await futureJoke;
     prefs.setString('futureJoke', jsonEncode(joke));
@@ -67,6 +66,7 @@ class MyAppState extends ChangeNotifier {
         'sexist': false,
         'explicit': false,
       };
+      setFilters(filters);
     }
   }
 
@@ -77,16 +77,20 @@ class MyAppState extends ChangeNotifier {
       futureJoke = Future.value(Joke.fromJson(jsonDecode(jokeJson)));
     } else {
       futureJoke = fetchJokeWithFilters(filters);
+      isFavorite = true;
+      setJoke();
+      setFavorite();
     }
   }
 
-  Future getFavorite() async{
+  Future getFavorite() async {
     final SharedPreferences prefs = await _prefs;
-    isFavorite = prefs.getBool('isFavorite')??true;
+    isFavorite = prefs.getBool('isFavorite') ?? true;
+    setFavorite();
     notifyListeners();
   }
 
-  void toggleFavorite(Joke joke) async{
+  void toggleFavorite(Joke joke) async {
     isFavorite = await databaseWrapper.toggleItem(joke);
     await setFavorite();
     notifyListeners();
@@ -98,5 +102,4 @@ class MyAppState extends ChangeNotifier {
     setFilters(filters);
     notifyListeners();
   }
-
 }
