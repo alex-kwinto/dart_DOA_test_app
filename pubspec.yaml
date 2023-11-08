@@ -18,7 +18,7 @@ dependencies:
   meta:
   sqflite: ^2.3.0
   path: ^1.8.3
-  shared_preferences: ^2.0.10
+  shared_preferences: ^2.2.2
 
 
 dev_dependencies:

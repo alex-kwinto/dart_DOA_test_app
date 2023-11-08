@@ -44,7 +44,6 @@ Uri buildJokeRequestURL(Map<String, bool> filters) {
 
 Future<Joke> fetchJokeWithFilters(Map<String, bool> filters) async {
   final requestUrl = buildJokeRequestURL(filters);
-  print(requestUrl.toString());
   final response = await http.get(requestUrl);
 
   if (response.statusCode == 200) {

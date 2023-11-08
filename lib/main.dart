@@ -6,6 +6,8 @@ import 'package:doa_test_app/ui/joke_page.dart';
 import 'package:doa_test_app/ui/filter_button.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(MyApp());
 }
 

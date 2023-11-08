@@ -33,8 +33,6 @@ class Joke {
   }
 
   factory Joke.fromMap(Map<String, dynamic> map) {
-    // print(map);
-
     return Joke(
         id: map['id'],
         type: map['type'],
@@ -45,7 +43,6 @@ class Joke {
   }
 
   factory Joke.fromJson(Map<String, dynamic> json) {
-    print(json);
     return Joke(
       id: json['id'],
       type: json['type'],
@@ -53,5 +50,15 @@ class Joke {
       category: json['category'],
       flags: Map<String, bool>.from(json['flags']),
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'type': type,
+      'joke': jokeText,
+      'category': category,
+      'flags': flags,
+    };
   }
 }
