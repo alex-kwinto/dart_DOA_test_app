@@ -1,3 +1,4 @@
+import 'package:doa_test_app/ui/detailes.dart';
 import 'package:flutter/material.dart';
 import 'package:doa_test_app/ui/favorites_page.dart';
 import 'package:doa_test_app/ui/joke_page.dart';
@@ -21,6 +22,9 @@ class _MyHomePageState extends State<MyHomePage> {
       case 1:
         page = FavoritesPage();
         break;
+      case 2:
+        page = DetailsScreen();
+        break;
       default:
         throw UnimplementedError('no widget for $selectedIndex');
     }
@@ -40,6 +44,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   NavigationRailDestination(
                     icon: Icon(Icons.favorite),
                     label: Text('Favorites'),
+                  ),
+                  NavigationRailDestination(
+                    icon: Icon(Icons.info),
+                    label: Text('About'),
                   ),
                 ],
                 selectedIndex: selectedIndex,
